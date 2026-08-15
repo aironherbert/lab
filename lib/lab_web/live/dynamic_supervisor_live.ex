@@ -86,6 +86,12 @@ defmodule LabWeb.DynamicSupervisorLive do
             <p class="mt-4 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
               Crie e remova processos durante a execução. Cada cartão abaixo representa um filho real e independente.
             </p>
+            <.link
+              navigate={~p"/registry"}
+              class="mt-5 inline-flex items-center gap-2 font-semibold text-violet-600 hover:text-violet-500 dark:text-violet-300"
+            >
+              Nomear processos com Registry <span aria-hidden="true">→</span>
+            </.link>
           </div>
           <button
             id="start-worker"

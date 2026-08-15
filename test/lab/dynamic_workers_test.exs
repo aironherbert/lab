@@ -28,4 +28,17 @@ defmodule Lab.DynamicWorkersTest do
     assert :ok = Lab.DynamicWorkers.stop_worker(new_pid)
     assert :ok = Lab.DynamicWorkers.stop_worker(survivor_pid)
   end
+
+  test "lists only dynamic workers when a registered worker uses the same supervisor" do
+    name = "registered-#{System.unique_integer([:positive])}"
+    {:ok, registered_pid} = Lab.RegistryWorkers.start_worker(name)
+    {:ok, dynamic_id, dynamic_pid} = Lab.DynamicWorkers.start_worker()
+
+    assert [%{id: ^dynamic_id, pid: ^dynamic_pid}] =
+             Enum.filter(Lab.DynamicWorkers.list_workers(), &(&1.id == dynamic_id))
+
+    assert :ok = Lab.DynamicWorkers.stop_worker(dynamic_pid)
+    assert :ok = Lab.RegistryWorkers.stop_worker(name)
+    refute Process.alive?(registered_pid)
+  end
 end

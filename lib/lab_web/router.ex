@@ -17,9 +17,10 @@ defmodule LabWeb.Router do
   scope "/", LabWeb do
     pipe_through :browser
 
-    live "/counter", CounterLive
+    live "/", CounterLive
     live "/supervisor", SupervisorLive
     live "/dynamic-supervisor", DynamicSupervisorLive
+    live "/registry", RegistryLive
   end
 
   # Other scopes may use custom stacks.

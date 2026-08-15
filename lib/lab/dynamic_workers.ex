@@ -15,11 +15,15 @@ defmodule Lab.DynamicWorkers do
   def list_workers do
     Lab.DynamicSupervisor
     |> DynamicSupervisor.which_children()
-    |> Enum.flat_map(fn {_, pid, _, _} ->
-      case safe_snapshot(pid) do
-        nil -> []
-        state -> [Map.put(state, :pid, pid)]
-      end
+    |> Enum.flat_map(fn
+      {_, pid, :worker, [Lab.DynamicWorker]} ->
+        case safe_snapshot(pid) do
+          nil -> []
+          state -> [Map.put(state, :pid, pid)]
+        end
+
+      _other_child ->
+        []
     end)
     |> Enum.sort_by(& &1.id)
   end

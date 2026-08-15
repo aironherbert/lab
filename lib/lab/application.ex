@@ -14,6 +14,7 @@ defmodule Lab.Application do
       {Phoenix.PubSub, name: Lab.PubSub},
       Lab.Counter,
       Lab.ResilienceSupervisor,
+      {Registry, keys: :unique, name: Lab.ProcessRegistry},
       {DynamicSupervisor, strategy: :one_for_one, name: Lab.DynamicSupervisor},
       # Start to serve requests, typically the last entry
       LabWeb.Endpoint
