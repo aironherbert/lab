@@ -12,8 +12,7 @@ defmodule Lab.Application do
       Lab.Repo,
       {DNSCluster, query: Application.get_env(:lab, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Lab.PubSub},
-      # Start a worker by calling: Lab.Worker.start_link(arg)
-      # {Lab.Worker, arg},
+      Lab.Counter,
       # Start to serve requests, typically the last entry
       LabWeb.Endpoint
     ]

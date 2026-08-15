@@ -35,37 +35,23 @@ defmodule LabWeb.Layouts do
 
   def app(assigns) do
     ~H"""
-    <header class="navbar px-4 sm:px-6 lg:px-8">
-      <div class="flex-1">
-        <a href="/" class="flex-1 flex w-fit items-center gap-2">
+    <header class="border-b border-slate-200/80 bg-white/80 px-4 py-3 backdrop-blur sm:px-6 lg:px-8 dark:border-white/10 dark:bg-slate-950/80">
+      <div class="mx-auto flex max-w-5xl items-center justify-between">
+        <a href="/" class="flex w-fit items-center gap-3">
           <img src={~p"/images/logo.svg"} width="36" />
-          <span class="text-sm font-semibold">v{Application.spec(:phoenix, :vsn)}</span>
+          <div>
+            <span class="block text-sm font-bold text-slate-950 dark:text-white">
+              Laboratório OTP
+            </span>
+            <span class="block text-xs text-slate-500">Phoenix + GenServer</span>
+          </div>
         </a>
-      </div>
-      <div class="flex-none">
-        <ul class="flex flex-column px-1 space-x-4 items-center">
-          <li>
-            <a href="https://phoenixframework.org/" class="btn btn-ghost">Website</a>
-          </li>
-          <li>
-            <a href="https://github.com/phoenixframework/phoenix" class="btn btn-ghost">GitHub</a>
-          </li>
-          <li>
-            <.theme_toggle />
-          </li>
-          <li>
-            <a href="https://hexdocs.pm/phoenix/overview.html" class="btn btn-primary">
-              Get Started <span aria-hidden="true">&rarr;</span>
-            </a>
-          </li>
-        </ul>
+        <.theme_toggle />
       </div>
     </header>
 
-    <main class="px-4 py-20 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-2xl space-y-4">
-        {render_slot(@inner_block)}
-      </div>
+    <main class="min-h-[calc(100vh-61px)] bg-slate-50 dark:bg-slate-950">
+      {render_slot(@inner_block)}
     </main>
 
     <.flash_group flash={@flash} />

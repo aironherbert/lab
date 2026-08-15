@@ -17,7 +17,7 @@ defmodule LabWeb.Router do
   scope "/", LabWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", CounterLive
   end
 
   # Other scopes may use custom stacks.
