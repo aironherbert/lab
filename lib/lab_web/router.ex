@@ -19,6 +19,7 @@ defmodule LabWeb.Router do
 
     live "/", CounterLive
     live "/supervisor", SupervisorLive
+    live "/dynamic-supervisor", DynamicSupervisorLive
   end
 
   # Other scopes may use custom stacks.

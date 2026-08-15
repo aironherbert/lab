@@ -78,6 +78,12 @@ defmodule LabWeb.SupervisorLive do
           <p class="mt-4 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
             Provoque uma falha real e observe o supervisor substituir o processo por outro, sem derrubar a aplicação.
           </p>
+          <.link
+            navigate={~p"/dynamic-supervisor"}
+            class="mt-5 inline-flex items-center gap-2 font-semibold text-violet-600 hover:text-violet-500 dark:text-violet-300"
+          >
+            Experimentar DynamicSupervisor <span aria-hidden="true">→</span>
+          </.link>
         </header>
 
         <div class="mt-10 grid gap-6 lg:grid-cols-2">

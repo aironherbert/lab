@@ -1,0 +1,31 @@
+defmodule Lab.DynamicWorkersTest do
+  use ExUnit.Case, async: false
+
+  test "starts and intentionally removes a child at runtime" do
+    {:ok, id, pid} = Lab.DynamicWorkers.start_worker()
+
+    assert %{id: ^id, jobs: 0} = Lab.DynamicWorker.snapshot(pid)
+    assert Enum.any?(Lab.DynamicWorkers.list_workers(), &(&1.pid == pid))
+
+    assert :ok = Lab.DynamicWorkers.stop_worker(pid)
+    refute Enum.any?(Lab.DynamicWorkers.list_workers(), &(&1.id == id))
+  end
+
+  test "restarts a crashed permanent child without affecting another child" do
+    {:ok, crashed_id, crashed_pid} = Lab.DynamicWorkers.start_worker()
+    {:ok, survivor_id, survivor_pid} = Lab.DynamicWorkers.start_worker()
+    Lab.DynamicWorker.subscribe()
+    ref = Process.monitor(crashed_pid)
+
+    Lab.DynamicWorker.crash(crashed_pid)
+
+    assert_receive {:DOWN, ^ref, :process, ^crashed_pid, _reason}
+    assert_receive {:dynamic_worker_started, new_pid, %{id: ^crashed_id}}
+    assert new_pid != crashed_pid
+    assert Process.alive?(survivor_pid)
+    assert %{id: ^survivor_id} = Lab.DynamicWorker.snapshot(survivor_pid)
+
+    assert :ok = Lab.DynamicWorkers.stop_worker(new_pid)
+    assert :ok = Lab.DynamicWorkers.stop_worker(survivor_pid)
+  end
+end
