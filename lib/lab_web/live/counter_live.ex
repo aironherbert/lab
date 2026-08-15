@@ -49,6 +49,12 @@ defmodule LabWeb.CounterLive do
           <p class="mt-4 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
             Este contador vive em um processo Elixir supervisionado. Abra outra aba e veja o mesmo estado aparecer nas duas.
           </p>
+          <.link
+            navigate={~p"/supervisor"}
+            class="mt-5 inline-flex items-center gap-2 font-semibold text-violet-600 hover:text-violet-500 dark:text-violet-300"
+          >
+            Explorar crashes e supervisão <span aria-hidden="true">→</span>
+          </.link>
         </header>
 
         <div class="mt-10 grid gap-6 lg:grid-cols-2">
