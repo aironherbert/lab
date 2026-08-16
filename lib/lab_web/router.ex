@@ -18,6 +18,7 @@ defmodule LabWeb.Router do
     pipe_through :browser
 
     live "/", CounterLive
+    live "/agent", AgentLive
     live "/supervisor", SupervisorLive
     live "/dynamic-supervisor", DynamicSupervisorLive
     live "/registry", RegistryLive
