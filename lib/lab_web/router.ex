@@ -19,6 +19,7 @@ defmodule LabWeb.Router do
 
     live "/", CounterLive
     live "/agent", AgentLive
+    live "/genserver-cart", CheckoutCartLive
     live "/supervisor", SupervisorLive
     live "/dynamic-supervisor", DynamicSupervisorLive
     live "/registry", RegistryLive
