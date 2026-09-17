@@ -14,6 +14,10 @@ defmodule LabWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :contact_api do
+    plug LabWeb.Plugs.ContactCors
+  end
+
   scope "/", LabWeb do
     pipe_through :browser
 
@@ -23,6 +27,14 @@ defmodule LabWeb.Router do
     live "/supervisor", SupervisorLive
     live "/dynamic-supervisor", DynamicSupervisorLive
     live "/registry", RegistryLive
+    live "/contato", ContactLive
+  end
+
+  scope "/api", LabWeb do
+    pipe_through [:api, :contact_api]
+
+    post "/contact", ContactController, :create
+    options "/contact", ContactController, :create
   end
 
   # Other scopes may use custom stacks.

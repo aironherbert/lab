@@ -7,6 +7,36 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
+## Formulário de contato
+
+A página de exemplo está em `/contato`. Em desenvolvimento, os e-mails enviados
+ficam disponíveis em `/dev/mailbox`.
+
+Para usar o formulário em outro site, envie JSON para `POST /api/contact`:
+
+```json
+{
+  "name": "Ana",
+  "email": "ana@example.com",
+  "subject": "Orçamento",
+  "message": "Olá, gostaria de conversar."
+}
+```
+
+A API responde `202` quando aceita a mensagem, `422` para campos inválidos,
+`429` ao exceder cinco tentativas em dez minutos por IP e `503` se a entrega
+falhar. O campo opcional `website` deve ficar vazio; ele funciona como
+proteção contra robôs. Não envie o destinatário nem a chave pela API.
+
+Em produção, configure `CONTACT_FROM_EMAIL` (remetente autorizado no provedor),
+`CONTACT_TO_EMAIL` (destinatário fixo) e `MAIL_PROVIDER` como `resend` ou
+`mailgun`. Use `RESEND_API_KEY` para Resend, ou `MAILGUN_API_KEY` e
+`MAILGUN_DOMAIN` para Mailgun. Para chamadas de outro domínio feitas pelo
+navegador, configure `CONTACT_ALLOWED_ORIGINS` com as origens exatas separadas
+por vírgula, por exemplo `https://site.example,https://www.site.example`.
+As credenciais devem ser definidas no ambiente do servidor, nunca no JavaScript
+nem em arquivos versionados.
+
 ## Testar a autenticação da GitHub App
 
 Configure a GitHub App e indique um repositório no qual ela esteja instalada:

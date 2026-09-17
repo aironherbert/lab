@@ -13,6 +13,7 @@ defmodule Lab.Application do
       {DNSCluster, query: Application.get_env(:lab, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Lab.PubSub},
       {Task.Supervisor, name: Lab.CheckoutTaskSupervisor},
+      Lab.ContactRateLimiter,
       Lab.Counter,
       Lab.Cart,
       Lab.CheckoutCart,

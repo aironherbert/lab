@@ -31,6 +31,8 @@ config :lab, LabWeb.Endpoint,
 # at the `config/runtime.exs`.
 config :lab, Lab.Mailer, adapter: Swoosh.Adapters.Local
 
+config :lab, Lab.Contact, from: "contato@example.test", to: "destino@example.test"
+
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.25.4",

@@ -46,7 +46,15 @@ defmodule LabWeb.Layouts do
             <span class="block text-xs text-slate-500">Phoenix + GenServer</span>
           </div>
         </a>
-        <.theme_toggle />
+        <div class="flex items-center gap-4">
+          <.link
+            navigate={~p"/contato"}
+            class="text-sm font-medium text-slate-600 transition hover:text-emerald-700 dark:text-slate-300 dark:hover:text-emerald-400"
+          >
+            Contato
+          </.link>
+          <.theme_toggle />
+        </div>
       </div>
     </header>
 

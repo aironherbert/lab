@@ -22,6 +22,13 @@ end
 
 config :lab, LabWeb.Endpoint, http: [port: String.to_integer(System.get_env("PORT", "4000"))]
 
+contact_origins =
+  System.get_env("CONTACT_ALLOWED_ORIGINS", "")
+  |> String.split(",", trim: true)
+  |> Enum.map(&String.trim/1)
+
+config :lab, :contact_allowed_origins, contact_origins
+
 if config_env() == :prod do
   database_url =
     System.get_env("DATABASE_URL") ||
@@ -99,21 +106,25 @@ if config_env() == :prod do
   #
   # Check `Plug.SSL` for all available options in `force_ssl`.
 
-  # ## Configuring the mailer
-  #
-  # In production you need to configure the mailer to use a different adapter.
-  # Here is an example configuration for Mailgun:
-  #
-  #     config :lab, Lab.Mailer,
-  #       adapter: Swoosh.Adapters.Mailgun,
-  #       api_key: System.get_env("MAILGUN_API_KEY"),
-  #       domain: System.get_env("MAILGUN_DOMAIN")
-  #
-  # Most non-SMTP adapters require an API client. Swoosh supports Req, Hackney,
-  # and Finch out-of-the-box. This configuration is typically done at
-  # compile-time in your config/prod.exs:
-  #
-  #     config :swoosh, :api_client, Swoosh.ApiClient.Req
-  #
-  # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
+  from = System.get_env("CONTACT_FROM_EMAIL") || raise "CONTACT_FROM_EMAIL is missing"
+  to = System.get_env("CONTACT_TO_EMAIL") || raise "CONTACT_TO_EMAIL is missing"
+  config :lab, Lab.Contact, from: from, to: to
+
+  mailer =
+    case System.get_env("MAIL_PROVIDER") do
+      "resend" ->
+        [adapter: Swoosh.Adapters.Resend, api_key: System.fetch_env!("RESEND_API_KEY")]
+
+      "mailgun" ->
+        [
+          adapter: Swoosh.Adapters.Mailgun,
+          api_key: System.fetch_env!("MAILGUN_API_KEY"),
+          domain: System.fetch_env!("MAILGUN_DOMAIN")
+        ]
+
+      _ ->
+        raise "MAIL_PROVIDER must be resend or mailgun"
+    end
+
+  config :lab, Lab.Mailer, mailer
 end
