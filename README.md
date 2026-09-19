@@ -37,6 +37,16 @@ por vírgula, por exemplo `https://site.example,https://www.site.example`.
 As credenciais devem ser definidas no ambiente do servidor, nunca no JavaScript
 nem em arquivos versionados.
 
+### Fly.io sem banco de dados
+
+O formulário não usa Postgres. Em produção, `Lab.Repo` só inicia quando
+`DATABASE_URL` está configurada; por isso, é possível publicar apenas a
+aplicação com `fly launch --no-deploy --no-db --ha=false`. Escolha uma única
+máquina pequena e confira o custo da região no painel do Fly. Antes do primeiro `fly deploy`,
+configure os secrets do formulário, `PHX_HOST` e `PHX_SERVER=true`, e confira
+que a porta interna do `fly.toml` é `4000`. Se o Fly gerar um comando de
+migração em `[deploy]`, remova-o enquanto a aplicação não tiver banco.
+
 ## Testar a autenticação da GitHub App
 
 Configure a GitHub App e indique um repositório no qual ela esteja instalada:

@@ -85,6 +85,7 @@ defmodule Lab.MixProject do
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
       "assets.build": ["compile", "tailwind lab", "esbuild lab"],
       "assets.deploy": [
+        "compile",
         "tailwind lab --minify",
         "esbuild lab --minify",
         "phx.digest"

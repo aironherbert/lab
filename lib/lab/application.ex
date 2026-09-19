@@ -7,22 +7,26 @@ defmodule Lab.Application do
 
   @impl true
   def start(_type, _args) do
-    children = [
-      LabWeb.Telemetry,
-      Lab.Repo,
-      {DNSCluster, query: Application.get_env(:lab, :dns_cluster_query) || :ignore},
-      {Phoenix.PubSub, name: Lab.PubSub},
-      {Task.Supervisor, name: Lab.CheckoutTaskSupervisor},
-      Lab.ContactRateLimiter,
-      Lab.Counter,
-      Lab.Cart,
-      Lab.CheckoutCart,
-      Lab.ResilienceSupervisor,
-      {Registry, keys: :unique, name: Lab.ProcessRegistry},
-      {DynamicSupervisor, strategy: :one_for_one, name: Lab.DynamicSupervisor},
-      # Start to serve requests, typically the last entry
-      LabWeb.Endpoint
-    ]
+    repo_children =
+      if Application.get_env(:lab, :database_enabled, true), do: [Lab.Repo], else: []
+
+    children =
+      [LabWeb.Telemetry] ++
+        repo_children ++
+        [
+          {DNSCluster, query: Application.get_env(:lab, :dns_cluster_query) || :ignore},
+          {Phoenix.PubSub, name: Lab.PubSub},
+          {Task.Supervisor, name: Lab.CheckoutTaskSupervisor},
+          Lab.ContactRateLimiter,
+          Lab.Counter,
+          Lab.Cart,
+          Lab.CheckoutCart,
+          Lab.ResilienceSupervisor,
+          {Registry, keys: :unique, name: Lab.ProcessRegistry},
+          {DynamicSupervisor, strategy: :one_for_one, name: Lab.DynamicSupervisor},
+          # Start to serve requests, typically the last entry
+          LabWeb.Endpoint
+        ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
