@@ -29,8 +29,9 @@ falhar. O campo opcional `website` deve ficar vazio; ele funciona como
 proteção contra robôs. Não envie o destinatário nem a chave pela API.
 
 Em produção, configure `CONTACT_FROM_EMAIL` (remetente autorizado no provedor),
-`CONTACT_TO_EMAIL` (destinatário fixo) e `MAIL_PROVIDER` como `resend` ou
-`mailgun`. Use `RESEND_API_KEY` para Resend, ou `MAILGUN_API_KEY` e
+`CONTACT_TO_EMAIL` (destinatário fixo) e `MAIL_PROVIDER` como `resend`,
+`mailersend` ou `mailgun`. Use `RESEND_API_KEY` para Resend,
+`MAILERSEND_API_TOKEN` para MailerSend, ou `MAILGUN_API_KEY` e
 `MAILGUN_DOMAIN` para Mailgun. Para chamadas de outro domínio feitas pelo
 navegador, configure `CONTACT_ALLOWED_ORIGINS` com as origens exatas separadas
 por vírgula, por exemplo `https://site.example,https://www.site.example`.
@@ -43,9 +44,10 @@ O formulário não usa Postgres. Em produção, `Lab.Repo` só inicia quando
 `DATABASE_URL` está configurada; por isso, é possível publicar apenas a
 aplicação com `fly launch --no-deploy --no-db --ha=false`. Escolha uma única
 máquina pequena e confira o custo da região no painel do Fly. Antes do primeiro `fly deploy`,
-configure os secrets do formulário, `PHX_HOST` e `PHX_SERVER=true`, e confira
-que a porta interna do `fly.toml` é `4000`. Se o Fly gerar um comando de
-migração em `[deploy]`, remova-o enquanto a aplicação não tiver banco.
+configure os secrets do formulário e confira que `PORT` e `internal_port` no
+`fly.toml` são iguais (neste projeto, `8080`). O script `bin/server` já define
+`PHX_SERVER=true`. Não configure `release_command` de migração enquanto a
+aplicação não tiver banco.
 
 ## Testar a autenticação da GitHub App
 

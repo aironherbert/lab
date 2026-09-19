@@ -113,6 +113,9 @@ if config_env() == :prod do
       "resend" ->
         [adapter: Swoosh.Adapters.Resend, api_key: System.fetch_env!("RESEND_API_KEY")]
 
+      "mailersend" ->
+        [adapter: Swoosh.Adapters.Mailersend, api_key: System.fetch_env!("MAILERSEND_API_TOKEN")]
+
       "mailgun" ->
         [
           adapter: Swoosh.Adapters.Mailgun,
@@ -121,7 +124,7 @@ if config_env() == :prod do
         ]
 
       _ ->
-        raise "MAIL_PROVIDER must be resend or mailgun"
+        raise "MAIL_PROVIDER must be resend, mailersend or mailgun"
     end
 
   config :lab, Lab.Mailer, mailer
